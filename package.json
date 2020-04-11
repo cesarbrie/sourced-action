@@ -18,10 +18,14 @@
   },
   "homepage": "https://github.com/cesarbrie/sourced-action#readme",
   "devDependencies": {
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "@ngrx/store": ">=8",
+    "@ngrx/effects": ">=8",
+    "rxjs": ">=6"
   },
   "peerDependencies": {
-    "ngrx": ">=8"
+    "@ngrx/store": ">=8",
+    "rxjs": ">=6"
   },
   "files": [
     "lib/**/*"
