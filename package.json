@@ -1,6 +1,6 @@
 {
   "name": "@ces/sourced-action",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A set of tools to allow the source in ngrx actions to be set in the place where the action happens.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
