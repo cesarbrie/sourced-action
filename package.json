@@ -21,7 +21,8 @@
     "typescript": "^3.7.5",
     "@ngrx/store": ">=8",
     "@ngrx/effects": ">=8",
-    "rxjs": ">=6"
+    "rxjs": ">=6",
+    "@angular/core": ">=8"
   },
   "peerDependencies": {
     "@ngrx/store": ">=8",
