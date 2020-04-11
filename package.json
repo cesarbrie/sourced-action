@@ -1,0 +1,34 @@
+{
+  "name": "@ces/sourced-action",
+  "version": "0.0.1",
+  "description": "A set of tools to allow the source in ngrx actions to be set in the place where the action happens.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./lib && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cesarbrie/sourced-action.git"
+  },
+  "author": "César Miguel Brie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cesarbrie/sourced-action/issues"
+  },
+  "homepage": "https://github.com/cesarbrie/sourced-action#readme",
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  },
+  "peerDependencies": {
+    "ngrx": ">=8"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "keywords": [
+    "NgRx",
+    "rxjs",
+    "redux"
+  ]
+}
