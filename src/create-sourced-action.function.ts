@@ -26,7 +26,7 @@ export function createSourcedAction<T extends string, C extends Creator, P exten
                 const action = actionCreator(props);
                 const source = sourceOrProps;
 
-                Object.defineProperty(action, '__typeWithoutSource', {
+                Object.defineProperty(action, 'typeWithoutSource', {
                     value: type,
                     writable: false,
                 });
@@ -69,7 +69,7 @@ export type SourcedActionCreatorReturnType<T extends string, P extends object, S
 // Settled
 
 export type SourcedAction<T extends string = string, S extends string = string> =
-    TypedAction<T> & { readonly __typeWithoutSource: S };
+    TypedAction<T> & { readonly typeWithoutSource: S };
 
 export const isSourcedAction = (action: Action): action is SourcedAction =>
-    'type' in action && '__typeWithoutSource' in action;
+    'type' in action && 'typeWithoutSource' in action;

@@ -7,7 +7,7 @@ export function createReducer<S, A extends Action = Action>(initialState: S, ...
 
     return function(state: S = initialState, action: A): S
     {
-        const type = isSourcedAction(action) ? action.__typeWithoutSource : action.type;
+        const type = isSourcedAction(action) ? action.typeWithoutSource : action.type;
         const reTypedAction: Action = { ...action, type };
         return reducer(state, reTypedAction);
     };

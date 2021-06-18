@@ -9,7 +9,7 @@ export const ofType = ((...allowedTypes: (string | ActionCreator)[]): OperatorFu
     return filter((action: Action) =>
         allowedTypes.some(typeOrActionCreator =>
         {
-            const actionType = isSourcedAction(action) ? action.__typeWithoutSource : action.type;
+            const actionType = isSourcedAction(action) ? action.typeWithoutSource : action.type;
             const checkedType = typeof typeOrActionCreator === 'string' ?
                 typeOrActionCreator :
                 typeOrActionCreator.type;
