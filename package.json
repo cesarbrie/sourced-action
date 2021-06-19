@@ -1,6 +1,6 @@
 {
   "name": "@ces/sourced-action",
-  "version": "0.0.3",
+  "version": "12.0.0",
   "description": "A set of tools to allow the source in ngrx actions to be set in the place where the action happens.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -18,14 +18,14 @@
   },
   "homepage": "https://github.com/cesarbrie/sourced-action#readme",
   "devDependencies": {
-    "typescript": "^3.7.5",
-    "@ngrx/store": ">=8",
-    "@ngrx/effects": ">=8",
+    "@angular/core": ">=8",
+    "@ngrx/effects": ">=12",
+    "@ngrx/store": ">=12",
     "rxjs": ">=6",
-    "@angular/core": ">=8"
+    "typescript": ">=4"
   },
   "peerDependencies": {
-    "@ngrx/store": ">=8",
+    "@ngrx/store": ">=12",
     "rxjs": ">=6"
   },
   "files": [

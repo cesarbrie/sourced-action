@@ -1,23 +1,21 @@
 import { createAction } from '@ngrx/store';
-import { Action, ActionCreator, Creator, FunctionWithParametersType, TypedAction } from '@ngrx/store/src/models';
-
-// Action creators taken from ts-action library and modified a bit to better
-// fit current NgRx usage. Thank you Nicholas Jamieson (@cartant).
+import { Action, ActionCreatorProps, Creator, FunctionWithParametersType, TypedAction } from '@ngrx/store/src/models';
 
 export function createSourcedAction<T extends string>(type: T): SourcedActionCreator<T>;
-export function createSourcedAction<T extends string, P extends object>(type: T, config: Props<P>):
-SourcedActionCreator<T, P>;
+export function createSourcedAction<T extends string, P extends object>(type: T, config: ActionCreatorProps<P> & NotAllowedCheck<P>): SourcedActionCreator<T, P>;
 export function createSourcedAction<T extends string, P extends any[], R extends object>
-(type: T, creator: Creator<P, R>): FunctionWithParametersType<P, R & TypedAction<T>> & TypedAction<T>;
+(type: T, creator: Creator<P, R & NotAllowedCheck<R>>): FunctionWithParametersType<P, R & SourcedAction<T>> & SourcedAction<T>;
 
-export function createSourcedAction<T extends string, C extends Creator, P extends object>(
+export function createSourcedAction<T extends string, C extends Creator>(
     type: T,
-    config?: Props<P> | C
-): SourcedActionCreator<T, P>
+    config?: { _as: 'props' } | C
+): SourcedActionCreator<T, object>
 {
-    const actionCreator: ActionCreator<T> = createAction(type, config as any);
+    const actionCreator = config
+        ? createAction(type, config as ActionCreatorProps<any>)
+        : createAction(type);
 
-    const sourcedActionCreator: SourcedActionCreator<T, P> = Object.defineProperty(
+    const sourcedActionCreator: SourcedActionCreator<T> = Object.defineProperty(
         <S extends string, P extends object>(sourceOrProps?: S | P, props?: P):
         SourcedActionCreatorReturnType<T, P, S> | SourcedActionCreatorReturnType<T, P> =>
         {
@@ -45,22 +43,23 @@ export function createSourcedAction<T extends string, C extends Creator, P exten
             }
         },
         'type', { value: type, writable: false }
-    );
+    ) as SourcedActionCreator<T, object>;
 
     return sourcedActionCreator;
 }
 
-interface Props<P>
-{
-    _as: 'props';
-    _p: P;
-}
+export type SourcedActionCreator<
+    T extends string,
+    P extends object = {}
+> =
+    { type: T }
+    &
+    ((sourceOrProps?: string | P, props?: P) =>
+        SourcedActionCreatorReturnType<T, P, string>
+        |
+        SourcedActionCreatorReturnType<T, P>);
 
-export type SourcedActionCreator<T extends string, P extends object = object, S extends string = string> =
-    { type: T } & ((sourceOrProps?: S | P, props?: P) =>
-        SourcedActionCreatorReturnType<T, P, S> | SourcedActionCreatorReturnType<T, P>);
-
-export type SourcedActionCreatorReturnType<T extends string, P extends object, S extends (string | null) = null> =
+export type SourcedActionCreatorReturnType<T extends string, P extends object = {}, S extends (string | null) = null> =
     S extends null ?
         P & TypedAction<T> :
         P & SourcedAction<T>;
@@ -73,3 +72,28 @@ export type SourcedAction<T extends string = string, S extends string = string> 
 
 export const isSourcedAction = (action: Action): action is SourcedAction =>
     'type' in action && 'typeWithoutSource' in action;
+
+
+
+
+// models.ts
+
+export const arraysAreNotAllowedMsg =
+  'arrays are not allowed in action creators';
+type ArraysAreNotAllowed = typeof arraysAreNotAllowedMsg;
+
+export const typePropertyIsNotAllowedMsg =
+  'type property is not allowed in action creators';
+type TypePropertyIsNotAllowed = typeof typePropertyIsNotAllowedMsg;
+
+export const emptyObjectsAreNotAllowedMsg =
+  'empty objects are not allowed in action creators';
+type EmptyObjectsAreNotAllowed = typeof emptyObjectsAreNotAllowedMsg;
+
+export type NotAllowedCheck<T extends object> = T extends any[]
+    ? ArraysAreNotAllowed
+    : T extends { type: any }
+    ? TypePropertyIsNotAllowed
+    : keyof T extends never
+    ? EmptyObjectsAreNotAllowed
+    : unknown;

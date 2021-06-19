@@ -1,7 +1,7 @@
-import { Action, ActionReducer, createReducer as _createReducer, On } from '@ngrx/store';
+import { Action, ActionCreator, ActionReducer, createReducer as _createReducer, ReducerTypes } from '@ngrx/store';
 import { isSourcedAction } from './create-sourced-action.function';
 
-export function createReducer<S, A extends Action = Action>(initialState: S, ...ons: On<S>[]): ActionReducer<S, A>
+export function createReducer<S, A extends Action = Action>(initialState: S, ...ons: ReducerTypes<S, ActionCreator[]>[]): ActionReducer<S, A>
 {
     const reducer = _createReducer(initialState, ...ons);
 
